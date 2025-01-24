@@ -38,6 +38,6 @@ defaults:
   # _pages
   - scope:
       path: "dist"
-      type: pages
+      type: "pages"
     values:
       layout: "default"
