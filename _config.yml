@@ -35,9 +35,8 @@ encoding: "utf-8"
 
 # These settings control how pages and collections are included in the site
 defaults:
-  # _pages
-  - scope:
-      path: "dist"
-      type: "pages"
+  -
+    scope:
+      path: "./dist" # 一个空的字符串代表项目中所有的文件
     values:
       layout: "default"
