@@ -1,137 +1,331 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"
-    />
-    <title>CYSTART</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>未来之境</title>
     <link rel="shortcut icon" href="./favicon.ico" />
-    <link rel="stylesheet" type="text/css" href="./resources/styles/sFiraCode.css" />
-    <link rel="stylesheet" type="text/css" href="./resources/styles/uss.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+        background: linear-gradient(to bottom, #ffffff, #eeeeee);
+        color: #222;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      h1 {
+        font-size: clamp(30px, 5vw, 60px);
+        font-weight: bold;
+        color: #222831;
+        opacity: 0;
+        animation: fadeIn 1.5s forwards, glow 3s infinite alternate;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        to {
+          text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+        }
+      }
+
+      p {
+        font-size: clamp(16px, 2vw, 24px);
+        margin: 20px 0;
+        color: #555;
+      }
+
+      .social {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .social a {
+        text-decoration: none;
+        color: #333;
+        font-size: 18px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        background: #E0E0E0;
+        transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .social a:hover {
+        background: #C0C0C0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        color: #000;
+      }
+
+      .social a img {
+        width: 20px;
+        /* 图标宽度 */
+        height: 20px;
+        /* 图标高度 */
+        transition: transform 0.3s;
+        /* 添加图片缩放效果 */
+      }
+
+      .weather-container {
+        margin-top: 20px;
+        background: #F5F5F5;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08);
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        max-width: 90%;
+        min-width: 300px;
+      }
+
+      .weather-container img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .weather-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      @media (max-width: 600px) {
+        .weather-container {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .weather-info {
+          text-align: center;
+        }
+      }
+    </style>
   </head>
-
   <body>
-    <div id="box">
-      <!-- 个人资料卡片 -->
-      <div class="meBox">
-        <!-- 头像 -->
-        <a href="/"><div class="headPhoto"></div></a>
-        <!-- 介绍 -->
-        <div class="meBox-title">
-          <p>I'm cystart</p>
-          <div class="fg"></div>
-        </div>
-        <div class="meBox-text">
-          <p>😎</p>
-          <p>(´▽`ʃ♡ƪ)</p>
-          <p>热爱Web与App技术</p>
-          <p>不断学习 共同成长</p>
-        </div>
-        <!-- 两个按钮 -->
-        <div class="meBox-Button">
-          <a href="mailto:1413403377@qq.com">邮箱</a
-          ><!-- 按钮1-->
-          <!--<a href="https://blog.sjl511.com" target="_blank">博客</a>-->
-          <a href="tencent://message/?uin=1413403377" target="_blank">QQ</a
-          ><!-- 按钮2-->
-        </div>
-      </div>
+    <h1>未来之境</h1>
+    <p>探索科技与创意的无限可能</p>
+    <div class="social">
+    <a href="https://github.com/ccy223" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"> GitHub
+    </a>
+    <a href="https://weixin.qq.com/r/yourweixinlink" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/3670/3670101.png" alt="WeChat"> WeChat
+    </a>
+    <a href="mailto:youremail@example.com">
+        <img src="https://cdn-icons-png.flaticon.com/128/3686/3686989.png" alt="Email"> Email
+    </a>
+    </div>
 
-      <!-- 伪终端介绍 -->
-      <div id="cmdBox">
-        <!-- 第一个终端 -->
-        <div class="cmd">
-          <!-- 三个按钮 -->
-          <div class="click">
-            <div class="red"></div>
-            <div class="yellow"></div>
-            <div class="green"></div>
-          </div>
-          <!-- 顶部标题 -->
-          <div class="title">
-            <span>love - bash</span>
-          </div>
-          <!-- 终端内文字 -->
-          <div class="cmdText">
-            <span style="color: rgb(0, 190, 0)">root@cystart</span>
-            <span style="color: blue">~</span>
-            <span style="color: rgb(0, 0, 0)">./tianqi.sh</span>
-            <br />
-            <!-- <iframe scrolling="no" src="https://tianqiapi.com/api.php?style=tu&skin=pitaya" frameborder="0" width="350" height="24" allowtransparency="true"></iframe> -->
-            <iframe scrolling="no" src="https://widget.tianqiapi.com/?style=tu&skin=pitaya" frameborder="0" width="350" height="24" allowtransparency="true"></iframe>
-            <br />
-            <span style="color: rgb(0, 190, 0)">root@cystart</span>
-            <span style="color: blue">~</span>
-            <span style="color: rgb(0, 0, 0)">cat /me.txt</span>
-            <p>&gt; 喜欢思考、深究、学习。</p>
-            <p>&gt; 爱好计算机、折腾电子产品。</p>
-            <p>&gt; 主攻Java Web开发；</p>
-            <p>&gt; 核心思想：</p>
-            <p>
-              &gt; 大处着眼，小处着手。
-            </p>
-            <p>&gt; 说一千，道一万，不如办成事一件！</p>
-            <span style="color: rgb(0, 190, 0)">root@cystart</span>
-            <span style="color: blue">~</span>
-            <span style="color: rgb(0, 0, 0)">sudo rm -rf /*</span>
-            <p>每日一言：</p>
-            <p>
-              &gt; <span id="hitokoto">休息对于生存而言，也是紧要问题</span>
-            </p>
-          </div>
-        </div>
-        <!-- 第二个终端 -->
-        <div class="cmd cmd2">
-          <!-- 三个按钮 -->
-          <div class="click">
-            <div class="red"></div>
-            <div class="yellow"></div>
-            <div class="green"></div>
-          </div>
-          <!-- 顶部标题 -->
-          <div class="title">
-            <span>love - bash</span>
-          </div>
-          <!-- 终端内文字 -->
-          <div class="cmdText">
-            <span style="color: rgb(0, 190, 0)">root@cystart</span>
-            <span style="color: blue">~</span>
-            <span style="color: rgb(0, 0, 0)">./links.sh</span>
-            <p>快捷导航：</p>
-            <ul class="ul">
-              <li>
-                <a href="https://www.cystart.cc/" target="_blank">
-                  <b>工具箱</b>
-                </a>
-              </li>
-              <li>
-                <a href="https://cystart.cc/" target="_blank">
-                  <b>文章</b>
-                </a>
-              </li>
-            </ul>
-            <span style="color: rgb(0, 190, 0)">root@cystart</span>
-            <span style="color: blue">~</span>
-            <span style="color: rgb(0, 0, 0)">./I.sh</span>
-            <h2>本站托管于Github Pages.</h2>
-          </div>
-        </div>
+    <div class="weather-container" id="weather">
+      <img
+        id="weather-icon"
+        src="https://cdn-icons-png.flaticon.com/512/1163/1163631.png"
+        alt="天气图标"
+      />
+      <div class="weather-info">
+        <span id="weather-text">正在获取天气信息...</span>
       </div>
     </div>
 
-    <!-- 页脚 -->
-    <div id="footer">
-      <p>
-        <a href="http://www.beian.gov.cn" target="_blank">
-          <img src="./resources/images/beian.png" style="position: relative;top: 3.5px;" />
-          粤ICP备2021155708号
-        </a>
-      </p>
-      <br />
-      <p>Copyright © 2022 cystart.cc</p>
-    </div>
+    <script>
+      const weatherText = document.getElementById("weather-text");
+      const weatherIcon = document.getElementById("weather-icon");
+
+      function getCachedData(key, expiry = 3600000) {
+        // 默认缓存一小时
+        const cached = localStorage.getItem(key);
+        if (!cached) return null;
+        const data = JSON.parse(cached);
+        if (Date.now() - data.timestamp > expiry) return null;
+        return data;
+      }
+
+      async function getWeather(lat, lon) {
+        const cachedWeather = getCachedData("weather");
+        if (cachedWeather) {
+          weatherText.innerText = `当前温度: ${cachedWeather.temp}°C, 天气: ${cachedWeather.weather}`;
+          weatherIcon.src = cachedWeather.icon;
+          return;
+        }
+        try {
+          const response = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`
+          );
+          const data = await response.json();
+          const weatherCode = data.current_weather.weathercode;
+          let weatherDesc = "";
+          let iconUrl = "";
+
+          // 映射不同天气代码到描述和图标
+          switch (weatherCode) {
+            case 0:
+              weatherDesc = "晴天";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163661.png"; // 晴天图标
+              break;
+            case 1:
+            case 2:
+              weatherDesc = "多云";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163624.png"; // 多云图标
+              break;
+            case 3:
+              weatherDesc = "阴天";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163633.png"; // 阴天图标
+              break;
+            case 45:
+            case 48:
+              weatherDesc = "雾霾";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163677.png"; // 雾霾图标
+              break;
+            case 51:
+            case 53:
+            case 55:
+              weatherDesc = "小雨";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163639.png"; // 小雨图标
+              break;
+            case 61:
+            case 63:
+            case 65:
+              weatherDesc = "中雨";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163638.png"; // 中雨图标
+              break;
+            case 66:
+            case 67:
+              weatherDesc = "冻雨";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163632.png"; // 冻雨图标
+              break;
+            case 71:
+            case 73:
+            case 75:
+              weatherDesc = "小雪";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163641.png"; // 小雪图标
+              break;
+            case 77:
+              weatherDesc = "冰雹";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163645.png"; // 冰雹图标
+              break;
+            case 80:
+            case 81:
+            case 82:
+              weatherDesc = "阵雨";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163639.png"; // 阵雨图标
+              break;
+            case 85:
+            case 86:
+              weatherDesc = "大雪";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163641.png"; // 大雪图标
+              break;
+            case 95:
+            case 96:
+            case 99:
+              weatherDesc = "雷暴";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163674.png"; // 雷暴图标
+              break;
+            default:
+              weatherDesc = "未知";
+              iconUrl =
+                "https://cdn-icons-png.flaticon.com/512/1163/1163631.png"; // 默认图标
+              break;
+          }
+
+          weatherText.innerText = `当前温度: ${data.current_weather.temperature}°C, 天气: ${weatherDesc}`;
+          weatherIcon.src = iconUrl;
+
+          localStorage.setItem(
+            "weather",
+            JSON.stringify({
+              temp: data.current_weather.temperature,
+              weather: weatherDesc,
+              icon: iconUrl,
+              timestamp: Date.now(),
+            })
+          );
+        } catch (error) {
+          weatherText.innerText = "天气信息获取失败";
+        }
+      }
+
+      function fetchLocationAndWeather() {
+        const cachedLocation = getCachedData("location");
+        if (cachedLocation) {
+          getWeather(cachedLocation.lat, cachedLocation.lon);
+          return;
+        }
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              localStorage.setItem(
+                "location",
+                JSON.stringify({
+                  lat: latitude,
+                  lon: longitude,
+                  timestamp: Date.now(),
+                })
+              );
+              getWeather(latitude, longitude);
+            },
+            () => {
+              weatherText.innerText = "无法获取位置信息";
+            }
+          );
+        } else {
+          weatherText.innerText = "浏览器不支持定位功能";
+        }
+      }
+
+      fetchLocationAndWeather();
+    </script>
   </body>
 </html>
-<script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
