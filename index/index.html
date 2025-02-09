@@ -32,7 +32,8 @@
         font-weight: bold;
         color: #222831;
         opacity: 0;
-        animation: fadeIn 1.5s forwards, glow 3s infinite alternate;
+        animation: flipIn 1.5s forwards, glow 10s infinite alternate;
+        will-change: transform, opacity; /* 提示浏览器优化 */
       }
 
       @keyframes fadeIn {
@@ -48,12 +49,14 @@
       }
 
       @keyframes glow {
-        from {
-          text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        0% {
+          text-shadow: 0 0 10px rgba(120, 120, 120, 0.1);
         }
-
-        to {
-          text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+        50% {
+          text-shadow: 0 0 25px rgba(160, 160, 160, 0.3);
+        }
+        100% {
+          text-shadow: 0 0 40px rgba(190, 190, 190, 0.6);
         }
       }
 
@@ -61,6 +64,9 @@
         font-size: clamp(16px, 2vw, 24px);
         margin: 20px 0;
         color: #555;
+        opacity: 0;
+        animation: flipIn .8s forwards;
+        animation-delay: .1s;
       }
 
       .social {
@@ -77,26 +83,25 @@
         font-size: 18px;
         padding: 10px 20px;
         border-radius: 8px;
-        background: #E0E0E0;
+        background: #efefef;
         transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
         display: inline-flex;
         align-items: center;
         gap: 10px;
+        opacity: 0;
+        animation: fadeIn 1s forwards;
+        animation-delay: var(--delay);
       }
 
       .social a:hover {
-        background: #C0C0C0;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        background: #e6e6e6;
         color: #000;
       }
+      
 
       .social a img {
         width: 20px;
-        /* 图标宽度 */
         height: 20px;
-        /* 图标高度 */
-        transition: transform 0.3s;
-        /* 添加图片缩放效果 */
       }
 
       .weather-container {
@@ -115,27 +120,53 @@
         flex-wrap: wrap;
         max-width: 90%;
         min-width: 300px;
+        transform: rotateY(180deg);
+        opacity: 0;
+        animation: flipIn 1s forwards;
+        animation-delay: .4s;
+      }
+
+      @keyframes flipIn {
+        from {
+          transform: rotateX(10deg) scale(0.95);
+          opacity: 0;
+        }
+        50% {
+          transform: rotateX(-3deg) scale(1.01);
+          opacity: 0.85;
+        }
+        to {
+          transform: rotateX(0) scale(1);
+          opacity: 1;
+        }
       }
 
       .weather-container img {
         width: 50px;
         height: 50px;
+        animation: breathing 3s infinite alternate;
+      }
+      
+
+      @keyframes breathing {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.1);
+        }
       }
 
       .weather-info {
         display: flex;
-        flex-direction: column;
         align-items: center;
       }
 
       @media (max-width: 600px) {
-        .weather-container {
-          flex-direction: column;
-          align-items: center;
-        }
-
         .weather-info {
-          text-align: center;
+          display: flex;
+          flex-direction: column;
+          /* text-align: center; */
         }
       }
     </style>
@@ -144,13 +175,13 @@
     <h1>未来之境</h1>
     <p>探索科技与创意的无限可能</p>
     <div class="social">
-    <a href="https://github.com/ccy223" target="_blank">
+    <a href="https://github.com/ccy223" target="_blank" style="--delay: .1s">
       <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"> GitHub
     </a>
-    <a href="https://weixin.qq.com/r/yourweixinlink" target="_blank">
+    <a href="https://weixin.qq.com/r/yourweixinlink" target="_blank" style="--delay: .2s">
       <img src="https://cdn-icons-png.flaticon.com/512/3670/3670101.png" alt="WeChat"> WeChat
     </a>
-    <a href="mailto:1413403377@qq.com">
+    <a href="mailto:1413403377@qq.com" style="--delay: .3s">
       <img src="https://cdn-icons-png.flaticon.com/128/3686/3686989.png" alt="Email"> Email
     </a>
     </div>
@@ -162,13 +193,51 @@
         alt="天气图标"
       />
       <div class="weather-info">
-        <span id="weather-text">正在获取天气信息...</span>
+        <span class="weather-hint">正在获取天气信息...</span>
+
+        <span class="temperature"></span>
+        <span class="weather-text"></span>
       </div>
     </div>
 
     <script>
-      const weatherText = document.getElementById("weather-text");
+      const weatherInfo = document.querySelector(".weather-info");
+      const weatherHint = weatherInfo.querySelector(".weather-hint");
       const weatherIcon = document.getElementById("weather-icon");
+      // 映射不同天气代码到描述和图标
+      const weatherData = {
+        0: { img: "https://cdn-icons-png.flaticon.com/128/1163/1163662.png", text: "晴天" }, // ☀
+        1: { img: "https://cdn-icons-png.flaticon.com/128/1163/1163661.png", text: "少云" }, // 🌤
+        2: { img: "https://cdn-icons-png.flaticon.com/512/3222/3222801.png", text: "多云" }, // ⛅
+        3: { img: "https://cdn-icons-png.flaticon.com/128/5043/5043069.png", text: "阴天" }, // ☁
+        45: { img: "https://cdn-icons-png.flaticon.com/512/1163/1163677.png", text: "雾" }, // 🌫
+        48: { img: "https://cdn-icons-png.flaticon.com/512/1163/1163678.png", text: "霾" }, // 🌫
+        51: { img: "https://cdn-icons-png.flaticon.com/128/6205/6205732.png", text: "轻微毛毛雨" }, // 🌦
+        53: { img: "https://cdn-icons-png.flaticon.com/128/6205/6205732.png", text: "毛毛雨" }, // 🌦
+        55: { img: "https://cdn-icons-png.flaticon.com/128/6205/6205732.png", text: "强毛毛雨" }, // 🌦
+        61: { img: "https://cdn-icons-png.flaticon.com/128/4510/4510359.png", text: "小雨" }, // 🌧
+        63: { img: "https://cdn-icons-png.flaticon.com/128/4089/4089290.png", text: "中雨" }, // 🌧
+        65: { img: "https://cdn-icons-png.flaticon.com/128/4088/4088981.png", text: "大雨" }, // 🌧
+        66: { img: "https://cdn-icons-png.flaticon.com/128/6205/6205801.png", text: "轻冻雨" }, // 🌧
+        67: { img: "https://cdn-icons-png.flaticon.com/128/6205/6205801.png", text: "强冻雨" }, // 🌧
+        71: { img: "https://cdn-icons-png.flaticon.com/128/4089/4089239.png", text: "小雪" }, // 🌨
+        73: { img: "https://cdn-icons-png.flaticon.com/128/6235/6235558.png", text: "中雪" }, // 🌨
+        75: { img: "https://cdn-icons-png.flaticon.com/128/6205/6205822.png", text: "大雪" }, // 🌨
+        77: { img: "https://cdn-icons-png.flaticon.com/128/1163/1163628.png", text: "冰雹" }, // ❄
+        80: { img: "https://cdn-icons-png.flaticon.com/128/5422/5422008.png", text: "阵雨" }, // 🌦
+        81: { img: "https://cdn-icons-png.flaticon.com/128/5422/5422008.png", text: "强阵雨" }, // 🌦
+        82: { img: "https://cdn-icons-png.flaticon.com/128/5422/5422008.png", text: "暴雨" }, // ⛈
+        85: { img: "https://cdn-icons-png.flaticon.com/128/6235/6235524.png", text: "阵雪" }, // 🌨
+        86: { img: "https://cdn-icons-png.flaticon.com/128/6235/6235524.png", text: "强阵雪" }, // 🌨
+        95: { img: "https://cdn-icons-png.flaticon.com/128/4089/4089271.png", text: "雷暴" }, // 🌩
+        96: { img: "https://cdn-icons-png.flaticon.com/128/4089/4089326.png", text: "雷暴伴冰雹" }, // ⛈
+        99: { img: "https://cdn-icons-png.flaticon.com/128/4089/4089326.png", text: "强雷暴伴冰雹" }, // ⛈
+      };
+
+      function getWeatherItem(code) {
+        return weatherData[code] || { img: "https://cdn-icons-png.flaticon.com/512/1163/1163631.png", text: "未知天气" };
+      }
+
 
       function getCachedData(key, expiry = 3600000) {
         // 默认缓存一小时
@@ -182,8 +251,7 @@
       async function getWeather(lat, lon) {
         const cachedWeather = getCachedData("weather");
         if (cachedWeather) {
-          weatherText.innerText = `当前温度: ${cachedWeather.temp}°C, 天气: ${cachedWeather.weather}`;
-          weatherIcon.src = cachedWeather.icon;
+          updateWeatherUI(cachedWeather.temp, cachedWeather.weather, cachedWeather.icon);
           return;
         }
         try {
@@ -192,94 +260,11 @@
           );
           const data = await response.json();
           const weatherCode = data.current_weather.weathercode;
-          let weatherDesc = "";
-          let iconUrl = "";
+          const weatherItem = getWeatherItem(weatherCode)
+          const weatherDesc = weatherItem.text;
+          const iconUrl = weatherItem.img;
 
-          // 映射不同天气代码到描述和图标
-          switch (weatherCode) {
-            case 0:
-              weatherDesc = "晴天";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163661.png"; // 晴天图标
-              break;
-            case 1:
-            case 2:
-              weatherDesc = "多云";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163624.png"; // 多云图标
-              break;
-            case 3:
-              weatherDesc = "阴天";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163633.png"; // 阴天图标
-              break;
-            case 45:
-            case 48:
-              weatherDesc = "雾霾";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163677.png"; // 雾霾图标
-              break;
-            case 51:
-            case 53:
-            case 55:
-              weatherDesc = "小雨";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163639.png"; // 小雨图标
-              break;
-            case 61:
-            case 63:
-            case 65:
-              weatherDesc = "中雨";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163638.png"; // 中雨图标
-              break;
-            case 66:
-            case 67:
-              weatherDesc = "冻雨";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163632.png"; // 冻雨图标
-              break;
-            case 71:
-            case 73:
-            case 75:
-              weatherDesc = "小雪";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163641.png"; // 小雪图标
-              break;
-            case 77:
-              weatherDesc = "冰雹";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163645.png"; // 冰雹图标
-              break;
-            case 80:
-            case 81:
-            case 82:
-              weatherDesc = "阵雨";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163639.png"; // 阵雨图标
-              break;
-            case 85:
-            case 86:
-              weatherDesc = "大雪";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163641.png"; // 大雪图标
-              break;
-            case 95:
-            case 96:
-            case 99:
-              weatherDesc = "雷暴";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163674.png"; // 雷暴图标
-              break;
-            default:
-              weatherDesc = "未知";
-              iconUrl =
-                "https://cdn-icons-png.flaticon.com/512/1163/1163631.png"; // 默认图标
-              break;
-          }
-
-          weatherText.innerText = `当前温度: ${data.current_weather.temperature}°C, 天气: ${weatherDesc}`;
-          weatherIcon.src = iconUrl;
+          updateWeatherUI(data.current_weather.temperature, weatherDesc, iconUrl)
 
           localStorage.setItem(
             "weather",
@@ -291,7 +276,7 @@
             })
           );
         } catch (error) {
-          weatherText.innerText = "天气信息获取失败";
+          weatherHint.innerText = "天气信息获取失败";
         }
       }
 
@@ -317,12 +302,22 @@
               getWeather(latitude, longitude);
             },
             () => {
-              weatherText.innerText = "无法获取位置信息";
+              weatherHint.innerText = "无法获取位置信息";
             }
           );
         } else {
-          weatherText.innerText = "浏览器不支持定位功能";
+          weatherHint.innerText = "浏览器不支持定位功能";
         }
+      }
+
+      function updateWeatherUI(temperature, text, icon){
+        weatherHint.style.display = "none";
+
+        const temperatureEl = weatherInfo.querySelector(".temperature");
+        const weatherTextEl = weatherInfo.querySelector(".weather-text");
+        temperatureEl.innerText = `当前温度: ${temperature}°C,`
+        weatherTextEl.innerHTML = `天气: ${text}`
+        weatherIcon.src = icon;
       }
 
       fetchLocationAndWeather();
