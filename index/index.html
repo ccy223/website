@@ -36,6 +36,90 @@
         will-change: transform, opacity; /* 提示浏览器优化 */
       }
 
+      p {
+        font-size: clamp(16px, 2vw, 24px);
+        margin: 20px 0;
+        color: #555;
+        opacity: 0;
+        animation: flipIn .8s forwards;
+        animation-delay: .1s;
+        will-change: transform, opacity, width;
+        position: relative;
+      }
+
+      .social a:hover {
+        background: #e6e6e6;
+        color: #000;
+      }
+
+      .social a img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .weather-container {
+        margin-top: 20px;
+        background: #F5F5F5;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        max-width: 90%;
+        min-width: 300px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08);
+        opacity: 0;
+        /* , floatEffect 4s infinite ease-in-out */
+        animation: flipIn 1s forwards;
+        animation-delay: .4s, 1.5s;
+        will-change: transform, opacity;
+      }
+
+      .weather-container img {
+        width: 50px;
+        height: 50px;
+        animation: breathing 3s infinite alternate;
+      }
+      
+      .weather-info {
+        display: flex;
+        align-items: center;
+      }
+
+      @media (max-width: 600px) {
+        .weather-info {
+          display: flex;
+          flex-direction: column;
+          /* text-align: center; */
+        }
+      }
+
+      @keyframes floatEffect {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.13); }
+        100% { transform: translateY(0px); }
+      }
+
+      @keyframes flipIn {
+        from {
+          transform: rotateX(10deg) scale(0.95);
+          opacity: 0;
+        }
+        50% {
+          transform: rotateX(-3deg) scale(1.01);
+          opacity: 0.85;
+        }
+        to {
+          transform: rotateX(0) scale(1);
+          opacity: 1;
+        }
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -60,13 +144,39 @@
         }
       }
 
-      p {
-        font-size: clamp(16px, 2vw, 24px);
-        margin: 20px 0;
-        color: #555;
-        opacity: 0;
-        animation: flipIn .8s forwards;
-        animation-delay: .1s;
+      @keyframes breathing {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.1);
+        }
+      }
+    </style>
+    <style>
+      p::after {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        background-color: #000;
+        border-radius: 2px;
+        right: 0px;
+      }
+
+      p.ended::after {
+        animation: 1.1s cursor steps(2, jump-none) infinite;
+      }
+
+      p span {
+        --delay: 10s;
+        
+        display: inline-block;
+        overflow: hidden;
+        width: 0ch;
+        animation: 0.1s text-in ease-in-out forwards;
+        animation-delay: var(--delay);
       }
 
       .social {
@@ -93,87 +203,28 @@
         animation-delay: var(--delay);
       }
 
-      .social a:hover {
-        background: #e6e6e6;
-        color: #000;
-      }
-      
-
-      .social a img {
-        width: 20px;
-        height: 20px;
-      }
-
-      .weather-container {
-        margin-top: 20px;
-        background: #F5F5F5;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08);
-        font-size: 20px;
-        font-weight: bold;
-        color: #333;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        flex-wrap: wrap;
-        max-width: 90%;
-        min-width: 300px;
-        transform: rotateY(180deg);
-        opacity: 0;
-        animation: flipIn 1s forwards;
-        animation-delay: .4s;
-      }
-
-      @keyframes flipIn {
+      @keyframes cursor {
         from {
-          transform: rotateX(10deg) scale(0.95);
           opacity: 0;
         }
-        50% {
-          transform: rotateX(-3deg) scale(1.01);
-          opacity: 0.85;
-        }
         to {
-          transform: rotateX(0) scale(1);
           opacity: 1;
         }
       }
 
-      .weather-container img {
-        width: 50px;
-        height: 50px;
-        animation: breathing 3s infinite alternate;
-      }
-      
-
-      @keyframes breathing {
+      @keyframes text-in {
         from {
-          transform: scale(1);
+          width: 0ch;
         }
         to {
-          transform: scale(1.1);
-        }
-      }
-
-      .weather-info {
-        display: flex;
-        align-items: center;
-      }
-
-      @media (max-width: 600px) {
-        .weather-info {
-          display: flex;
-          flex-direction: column;
-          /* text-align: center; */
+          width: var(--ch, 1.7ch);
         }
       }
     </style>
   </head>
   <body>
     <h1>CYSTART</h1>
-    <p>用❤️对待每一行代码。</p>
+    <p>用心对待每一行代码。</p>
     <div class="social">
     <a href="https://github.com/ccy223" target="_blank" style="--delay: .1s">
       <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"> GitHub
@@ -199,6 +250,36 @@
         <span class="weather-text"></span>
       </div>
     </div>
+
+    <script>
+      const p = document.querySelector('p')
+      // h1.innerHTML = h1.textContent.replace(/\S/g, "<span>$&</span>")
+
+      // Support Space:
+      p.innerHTML = p.textContent
+        .replace(/\S/g, "<span>$&</span>")
+        .replace(/\s/g, "<span>&nbsp;</span>")
+        .replace('心', '❤️')
+
+
+      let delay = 0
+      document.querySelectorAll('span').forEach((span, index) => {
+        delay += 0.1
+        
+        if (index === 1) span.style.setProperty('--ch', '2.4ch')
+        
+        if (index === 3) delay += 0.3
+        
+        span.style.setProperty('--delay', `${delay}s`)
+        
+      })
+
+      p.addEventListener('animationend', (e) => {
+        if (e.target === document.querySelector('p span:last-child')) {
+          p.classList.add('ended')
+        }
+      })
+    </script>
 
     <script>
       const weatherInfo = document.querySelector(".weather-info");
