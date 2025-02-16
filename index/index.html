@@ -47,6 +47,30 @@
         position: relative;
       }
 
+      .social {
+        display: flex;
+        /* flex-wrap: wrap; */
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .social a {
+        text-decoration: none;
+        color: #333;
+        font-size: 18px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        background: #efefef;
+        transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        opacity: 0;
+        animation: fadeIn 1s forwards;
+        animation-delay: var(--delay);
+      }
+
       .social a:hover {
         background: #e6e6e6;
         color: #000;
@@ -91,7 +115,21 @@
         align-items: center;
       }
 
-      @media (max-width: 600px) {
+      @media (max-width: 480px) {
+        .social a{
+          padding: 10px 34px; 
+        }
+        .social a span {
+          display: none;
+        }
+        .social a img{
+          width: 22px;
+          height: 22px;
+        }
+
+        .weather-container{
+          width: 90%;
+        }
         .weather-info {
           display: flex;
           flex-direction: column;
@@ -179,30 +217,6 @@
         animation-delay: var(--delay);
       }
 
-      .social {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 20px;
-      }
-
-      .social a {
-        text-decoration: none;
-        color: #333;
-        font-size: 18px;
-        padding: 10px 20px;
-        border-radius: 8px;
-        background: #efefef;
-        transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        opacity: 0;
-        animation: fadeIn 1s forwards;
-        animation-delay: var(--delay);
-      }
-
       @keyframes cursor {
         from {
           opacity: 0;
@@ -226,15 +240,15 @@
     <h1>CYSTART</h1>
     <p>用心对待每一行代码。</p>
     <div class="social">
-    <a href="https://github.com/ccy223" target="_blank" style="--delay: .1s">
-      <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"> GitHub
-    </a>
-    <a href="https://weixin.qq.com/r/yourweixinlink" target="_blank" style="--delay: .2s">
-      <img src="https://cdn-icons-png.flaticon.com/512/3670/3670101.png" alt="WeChat"> WeChat
-    </a>
-    <a href="mailto:1413403377@qq.com" style="--delay: .3s">
-      <img src="https://cdn-icons-png.flaticon.com/128/3686/3686989.png" alt="Email"> Email
-    </a>
+      <a href="https://github.com/ccy223" target="_blank" style="--delay: .1s">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"> <span>GitHub</span>
+      </a>
+      <a href="javascript:void(0)" target="_blank" style="--delay: .2s">
+        <img src="https://cdn-icons-png.flaticon.com/512/3669/3669967.png" alt="Blog"> <span>Blog</span>
+      </a>
+      <a href="mailto:1413403377@qq.com" style="--delay: .3s">
+        <img src="https://cdn-icons-png.flaticon.com/128/3686/3686989.png" alt="Email"> <span>Email</span>
+      </a>
     </div>
 
     <div class="weather-container" id="weather">
